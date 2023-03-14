@@ -49,14 +49,15 @@ then brew services start nginx
 int main(void)
 {
     while (FCGI_Accept() >= 0) {
-        printf("Status: 200 OK\r\nContent-type: text/plain\r\n\r\n");
+        printf("Status: 200 OK\r\nContent-type: text/plain; charset=utf-8\r\n\r\n");
         const char *out = "Error";
         const char *original_url = getenv("REQUEST_URI");
         if (!original_url)
             // Not a real browser visit
             continue;
 
-        // Must run before any goto!
+        // Note: Must run before any goto!
+        // Note: Must set to 0 after every free!
         FILE *fd = 0;
         char *url = 0;
 
@@ -75,6 +76,7 @@ int main(void)
 
         fd = fopen(&url[1], "rb");
         free(url);
+        url = 0;
         if (!fd) {
             out = "Could not open";
             goto show;
@@ -86,10 +88,14 @@ int main(void)
         printf("%s\n",
                out);
         fflush(stdout);
-        if (fd)
+        if (fd) {
             fclose(fd);
-        if (url)
+            fd = 0;
+        }
+        if (url) {
             free(url);
+            url = 0;
+        }
     }
     return 0;
 }

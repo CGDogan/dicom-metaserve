@@ -17,7 +17,7 @@ char * reader(FILE * f) {
 
     printf("File Size: %zu\n", size);
 
-    char * preamble = malloc(128 * sizeof(char));
+    char * preamble = malloc(129 * sizeof(char));
     unsigned int s;
     const char * err;
     s = fread(preamble, 1, 128, f);
@@ -26,14 +26,12 @@ char * reader(FILE * f) {
         goto invalid;
     }
     // Trim preamble
-    int boundary = 127;
-    for (; boundary >= 0; boundary--) {
-        if (preamble[boundary] != ' ')
-            break;
-    }
-    preamble[boundary + 1] = 0;
+    int boundary = 0;
+    while (boundary < 128 && preamble[boundary] < 127 && preamble[boundary] > 32)
+        boundary++;
+    preamble[boundary] = 0;
 
-    printf("Preamble text (skip): %s\n", preamble);
+    printf("Preamble text (if readable): %s\n", preamble);
 
     s = fread(preamble, 1, 4, f);
     if ((s < 4) || memcmp(preamble, "DICM", 4)) {
