@@ -25,11 +25,12 @@ char * reader(FILE * f) {
         err = "Too short!";
         goto invalid;
     }
-    // Trim preamble
-    int boundary = 0;
-    while (boundary < 128 && preamble[boundary] < 127 && preamble[boundary] > 32)
-        boundary++;
-    preamble[boundary] = 0;
+
+    for (int i = 0; i < 127; i++)
+        if (preamble[i] < 32 || preamble[i] > 126)
+            preamble[i] = ' ';
+
+    preamble[128] = 0;
 
     printf("Preamble text (if readable): %s\n", preamble);
 
