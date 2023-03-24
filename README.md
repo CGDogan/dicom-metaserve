@@ -19,7 +19,7 @@ Replace the path with the required path.
 
 Again, this weird syntax is designed for a tile engine that serves from files, otherwise reading the POST-uploaded file's metadata would be preferred.
 
-## Compiling
+## Compiling
 
 First see `compile_fcgi_mac.sh`, and adapt it for your needs to compile the local FCGI SDK in the project directory:
 
