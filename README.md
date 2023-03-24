@@ -9,6 +9,15 @@ Notes:
 - In the final tile server, I'll move "malloc" out of loops and reuse the scratch space rather than to reallocate repeatedly.
 - In the final tile server, I'll use the response writer I coded at ./output_writer.c rather than printing inside the reader.
 
+## Code structure:
+
+- `fcgi/` the FCGI SDK
+- `content_parser.c` Utilities for value parsing
+- `local.c` The CLI executable entry point
+- `output_writer.c` Utility to for text printing
+- `reader.c` DICOM parser
+- `server.c` FCGI entry point
+
 ## Usage:
 
 ```URL
